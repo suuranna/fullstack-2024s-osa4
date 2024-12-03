@@ -53,13 +53,58 @@ test('the first blog has right information', async () => {
   assert.strictEqual(initialBlogs[0].url, firstBlog.url)
 })
 
-test.only('blogs have id, not_id', async () => {
+test('blogs have id, not_id', async () => {
   const response = await api.get('/api/blogs')
 
   const firstBlog = response.body[0]
   const secondBlog = response.body[1]
   assert("id" in firstBlog)
   assert("id" in secondBlog)
+})
+
+test('A blog can be added', async() => {
+  const newBlog = {
+    title: "Uusi aihe",
+    author: "Uusi kirjoittaja",
+    url: "wwww.uusi.com",
+    likes: 1
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+  
+  const response = await api.get('/api/blogs')
+  const blogs = response.body.map(blog => blog.title)
+
+  assert.strictEqual(response.body.length, initialBlogs.length + 1)
+  assert(blogs.includes('Uusi aihe'))
+})
+
+test('Added blog has the right attributes', async() => {
+  const newBlog = {
+    title: "Uusi aihe",
+    author: "Uusi kirjoittaja",
+    url: "wwww.uusi.com",
+    likes: 1
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+  
+  const response = await api.get('/api/blogs')
+  const blog = response.body.find(blog => blog.title === newBlog.title)
+
+  assert('title' in blog)
+  assert('author' in blog)
+  assert('url' in blog)
+  assert('id' in blog)
+  assert('likes' in blog)
 })
 
 after(async () => {
