@@ -89,32 +89,70 @@ describe('total likes', () => {
         const result = listHelper.totalLikes(listWithManyBlogs)
         assert.strictEqual(result, 24)
     })
-  })
+})
 
 describe('favorite blog', () => {
-    test('empty list returns a string', () => {
+    test('if given an empty list, return a string', () => {
         const result = listHelper.favoriteBlog([])
         assert.strictEqual(result, 'The given list is empty')
     })
 
-    test('list with one blog returns the blog', () => {
+    test('if given a list with one blog, return the blog', () => {
         const result = listHelper.favoriteBlog(listWithOneBlog)
         assert.strictEqual(result.title, 'Go To Statement Considered Harmful')
         assert.strictEqual(result.author, 'Edsger W. Dijkstra')
         assert.strictEqual(result.likes, 5)
     })
 
-    test('list with many blogs returns the right blog', () => {
+    test('if given a list with many blogs, return the right blog', () => {
         const result = listHelper.favoriteBlog(listWithManyBlogs)
         assert.strictEqual(result.title, 'Canonical string reduction')
         assert.strictEqual(result.author, 'Edsger W. Dijkstra')
         assert.strictEqual(result.likes, 12)
     })
 
-    test('list with many blogs with the same likes returns the first blog', () => {
+    test('if given a list with many blogs with the same likes, return the first blog', () => {
         const result = listHelper.favoriteBlog(listWithManyBlogs2)
         assert.strictEqual(result.title, 'Go To Statement Considered Harmful')
         assert.strictEqual(result.author, 'Edsger W. Dijkstra')
         assert.strictEqual(result.likes, 9)
+    })
+})
+
+describe('most blogs', () => {
+    test('if given a list with one blog, return the author', () => {
+      const result = listHelper.mostBlogs(listWithOneBlog)
+      assert.strictEqual(result.author, 'Edsger W. Dijkstra')
+      assert.strictEqual(result.blogs, 1)
+    })
+
+    test('if given an empty list, return a string', () => {
+        const result = listHelper.mostBlogs([])
+        assert.strictEqual(result, 'The given list is empty')
+    })
+
+    test(' if given a list with many blogs, return the right author and blog count', () => {
+        const result = listHelper.mostBlogs(listWithManyBlogs)
+        assert.strictEqual(result.author, 'Edsger W. Dijkstra')
+        assert.strictEqual(result.blogs, 2)
+    })
+})
+
+describe('most likes', () => {
+    test('if given a list with one blog, return the author', () => {
+      const result = listHelper.mostLikes(listWithOneBlog)
+      assert.strictEqual(result.author, 'Edsger W. Dijkstra')
+      assert.strictEqual(result.likes, 5)
+    })
+
+    test('if given an empty list, return a string', () => {
+        const result = listHelper.mostLikes([])
+        assert.strictEqual(result, 'The given list is empty')
+    })
+
+    test(' if given a list with many blogs, return the right author and amount of likes', () => {
+        const result = listHelper.mostLikes(listWithManyBlogs)
+        assert.strictEqual(result.author, 'Edsger W. Dijkstra')
+        assert.strictEqual(result.likes, 17)
     })
 })
