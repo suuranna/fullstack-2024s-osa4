@@ -53,6 +53,15 @@ test('the first blog has right information', async () => {
   assert.strictEqual(initialBlogs[0].url, firstBlog.url)
 })
 
+test.only('blogs have id, not_id', async () => {
+  const response = await api.get('/api/blogs')
+
+  const firstBlog = response.body[0]
+  const secondBlog = response.body[1]
+  assert("id" in firstBlog)
+  assert("id" in secondBlog)
+})
+
 after(async () => {
   await mongoose.connection.close()
 })
