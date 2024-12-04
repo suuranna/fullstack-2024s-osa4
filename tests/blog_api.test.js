@@ -152,6 +152,44 @@ describe('testing likes validation', () => {
   })
 })
 
+describe('testing title and url validation', () => {
+  test('if url and title are not given, return 400 status code', async () => {
+    const newBlog = {
+      author: "Uusi kirjoittaja",
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(400)
+      .expect('Content-Type', /application\/json/)
+  })
+
+  test('if url or title is not given, return 400 status code', async () => {
+    const newBlog1 = {
+      title: "Aihe",
+      author: "Uusi kirjoittaja",
+    }
+
+    const newBlog2 = {
+      author: "Uusi kirjoittaja",
+      url: "wwww.ijij.com"
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog1)
+      .expect(400)
+      .expect('Content-Type', /application\/json/)
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog2)
+      .expect(400)
+      .expect('Content-Type', /application\/json/)
+  })
+})
+
 after(async () => {
   await mongoose.connection.close()
 })
