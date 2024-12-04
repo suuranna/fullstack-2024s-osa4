@@ -131,7 +131,7 @@ describe('testing likes validation', () => {
     assert.strictEqual(blog.likes, 0)
   })
 
-  test('if likes are give, likes will not be set to 0', async () => {
+  test('if likes are given, likes will not be set to 0', async () => {
     const newBlog = {
       title: "Uusi aihe",
       author: "Uusi kirjoittaja",
@@ -210,6 +210,29 @@ describe('testing delete method', () => {
     assert(!titles.includes(blogToDelete.title))
   })
 })
+
+describe('testing put method', () => {
+  test('update existing blogs likes', async () => {
+    let response = await api.get('/api/blogs')
+    const blogToUpdate = response.body[0]
+    const blogsAtStart = response.body.length
+
+    await api
+      .put(`/api/blogs/${blogToUpdate.id}`)
+      .send({ likes: 100 })
+      .expect(200)
+    
+    response = await api.get('/api/blogs')
+    const blogsAtTheEnd = response.body.length
+    const updatedBlog = response.body.find(blog => blog.id === blogToUpdate.id)
+
+    assert.strictEqual(blogsAtStart, blogsAtTheEnd)
+    assert.notStrictEqual(blogToUpdate.likes, 100)
+    assert.notStrictEqual(blogToUpdate.likes, updatedBlog.likes)
+    assert.strictEqual(updatedBlog.likes, 100)
+  })
+})
+
 
 after(async () => {
   await mongoose.connection.close()
