@@ -190,6 +190,27 @@ describe('testing title and url validation', () => {
   })
 })
 
+describe('testing delete method', () => {
+  test('delete blog deletes the right blog', async () => {
+    let response = await api.get('/api/blogs')
+    const blogToDelete = response.body[0]
+    const blogThatStays = response.body[1]
+    const blogsAtStart = response.body.length
+
+    await api
+      .delete(`/api/blogs/${blogToDelete.id}`)
+      .expect(204)
+    
+    response = await api.get('/api/blogs')
+    const blogsAtTheEnd = response.body.length
+    const titles = response.body.map(blog => blog.title)
+
+    assert.strictEqual(blogsAtStart - 1, blogsAtTheEnd)
+    assert.strictEqual(blogThatStays.title, response.body[0].title)
+    assert(!titles.includes(blogToDelete.title))
+  })
+})
+
 after(async () => {
   await mongoose.connection.close()
 })
