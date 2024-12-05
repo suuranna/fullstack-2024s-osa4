@@ -4,6 +4,6 @@ Content-Type: application/json
 {
     "title": "Aihe",
     "author": "Kirjoittaja",
-    "url": "wwww.bibibibibib.com",
-    "likes": 666
+    "url": "wwww.qqq.com",
+    "likes": 100000
 }
