@@ -1,9 +1,10 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlN1cGVyS8OkeXR0w6Rqw6QiLCJpZCI6IjY3NTBmODM5MGE1NjVlYmZhOTg4YWFkZSIsImlhdCI6MTczMzM2MjM1Nn0.y0ohZrrGaIIa_pHf5H1dhLSqqXLOyb1JusW7-1OeRzA
 
 {
-    "title": "Aihe",
-    "author": "Kirjoittaja",
-    "url": "wwww.qqq.com",
-    "likes": 100000
+    "title": "UUUSI aihe",
+    "author": "UUSI Kirjoittaja",
+    "url": "wwww.uusi.com",
+    "likes": 69
 }
