@@ -10,16 +10,16 @@ const Blog = require('../models/blog')
 
 const initialBlogs = [
   {
-    title: "Aihe",
-    author: "Kirjoittaja",
-    url: "wwww.nanannaa.com",
-    likes: 666
+    title: 'Aihe',
+    author: 'Kirjoittaja',
+    url: 'wwww.nanannaa.com',
+    likes: 666,
   },
   {
-    title: "Toinen aihe",
-    author: "Eri kirjoittaja",
-    url: "wwww.yeeet.com",
-    likes: 420
+    title: 'Toinen aihe',
+    author: 'Eri kirjoittaja',
+    url: 'wwww.yeeet.com',
+    likes: 420,
   },
 ]
 
@@ -59,18 +59,18 @@ describe('testing get method', () => {
 
     const firstBlog = response.body[0]
     const secondBlog = response.body[1]
-    assert("id" in firstBlog)
-    assert("id" in secondBlog)
+    assert('id' in firstBlog)
+    assert('id' in secondBlog)
   })
 })
 
 describe('testing post method', () => {
   test('A blog can be added', async () => {
     const newBlog = {
-      title: "Uusi aihe",
-      author: "Uusi kirjoittaja",
-      url: "wwww.uusi.com",
-      likes: 1
+      title: 'Uusi aihe',
+      author: 'Uusi kirjoittaja',
+      url: 'wwww.uusi.com',
+      likes: 1,
     }
 
     await api
@@ -78,9 +78,9 @@ describe('testing post method', () => {
       .send(newBlog)
       .expect(201)
       .expect('Content-Type', /application\/json/)
-    
+
     const response = await api.get('/api/blogs')
-    const blogs = response.body.map(blog => blog.title)
+    const blogs = response.body.map((blog) => blog.title)
 
     assert.strictEqual(response.body.length, initialBlogs.length + 1)
     assert(blogs.includes('Uusi aihe'))
@@ -88,10 +88,10 @@ describe('testing post method', () => {
 
   test('Added blog has the right attributes', async () => {
     const newBlog = {
-      title: "Uusi aihe",
-      author: "Uusi kirjoittaja",
-      url: "wwww.uusi.com",
-      likes: 1
+      title: 'Uusi aihe',
+      author: 'Uusi kirjoittaja',
+      url: 'wwww.uusi.com',
+      likes: 1,
     }
 
     await api
@@ -99,9 +99,9 @@ describe('testing post method', () => {
       .send(newBlog)
       .expect(201)
       .expect('Content-Type', /application\/json/)
-    
+
     const response = await api.get('/api/blogs')
-    const blog = response.body.find(blog => blog.title === newBlog.title)
+    const blog = response.body.find((blog) => blog.title === newBlog.title)
 
     assert('title' in blog)
     assert('author' in blog)
@@ -114,9 +114,9 @@ describe('testing post method', () => {
 describe('testing likes validation', () => {
   test('if likes are not given, likes will be set to 0', async () => {
     const newBlog = {
-      title: "Uusi aihe",
-      author: "Uusi kirjoittaja",
-      url: "wwww.uusi.com"
+      title: 'Uusi aihe',
+      author: 'Uusi kirjoittaja',
+      url: 'wwww.uusi.com',
     }
 
     await api
@@ -124,19 +124,19 @@ describe('testing likes validation', () => {
       .send(newBlog)
       .expect(201)
       .expect('Content-Type', /application\/json/)
-    
+
     const response = await api.get('/api/blogs')
-    const blog = response.body.find(blog => blog.title === newBlog.title)
+    const blog = response.body.find((blog) => blog.title === newBlog.title)
 
     assert.strictEqual(blog.likes, 0)
   })
 
   test('if likes are given, likes will not be set to 0', async () => {
     const newBlog = {
-      title: "Uusi aihe",
-      author: "Uusi kirjoittaja",
-      url: "wwww.uusi.com",
-      likes: 10
+      title: 'Uusi aihe',
+      author: 'Uusi kirjoittaja',
+      url: 'wwww.uusi.com',
+      likes: 10,
     }
 
     await api
@@ -144,9 +144,9 @@ describe('testing likes validation', () => {
       .send(newBlog)
       .expect(201)
       .expect('Content-Type', /application\/json/)
-    
+
     const response = await api.get('/api/blogs')
-    const blog = response.body.find(blog => blog.title === newBlog.title)
+    const blog = response.body.find((blog) => blog.title === newBlog.title)
 
     assert.strictEqual(blog.likes, 10)
   })
@@ -155,7 +155,7 @@ describe('testing likes validation', () => {
 describe('testing title and url validation', () => {
   test('if url and title are not given, return 400 status code', async () => {
     const newBlog = {
-      author: "Uusi kirjoittaja",
+      author: 'Uusi kirjoittaja',
     }
 
     await api
@@ -167,13 +167,13 @@ describe('testing title and url validation', () => {
 
   test('if url or title is not given, return 400 status code', async () => {
     const newBlog1 = {
-      title: "Aihe",
-      author: "Uusi kirjoittaja",
+      title: 'Aihe',
+      author: 'Uusi kirjoittaja',
     }
 
     const newBlog2 = {
-      author: "Uusi kirjoittaja",
-      url: "wwww.ijij.com"
+      author: 'Uusi kirjoittaja',
+      url: 'wwww.ijij.com',
     }
 
     await api
@@ -197,13 +197,11 @@ describe('testing delete method', () => {
     const blogThatStays = response.body[1]
     const blogsAtStart = response.body.length
 
-    await api
-      .delete(`/api/blogs/${blogToDelete.id}`)
-      .expect(204)
-    
+    await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204)
+
     response = await api.get('/api/blogs')
     const blogsAtTheEnd = response.body.length
-    const titles = response.body.map(blog => blog.title)
+    const titles = response.body.map((blog) => blog.title)
 
     assert.strictEqual(blogsAtStart - 1, blogsAtTheEnd)
     assert.strictEqual(blogThatStays.title, response.body[0].title)
@@ -221,10 +219,12 @@ describe('testing put method', () => {
       .put(`/api/blogs/${blogToUpdate.id}`)
       .send({ likes: 100 })
       .expect(200)
-    
+
     response = await api.get('/api/blogs')
     const blogsAtTheEnd = response.body.length
-    const updatedBlog = response.body.find(blog => blog.id === blogToUpdate.id)
+    const updatedBlog = response.body.find(
+      (blog) => blog.id === blogToUpdate.id
+    )
 
     assert.strictEqual(blogsAtStart, blogsAtTheEnd)
     assert.notStrictEqual(blogToUpdate.likes, 100)
@@ -232,7 +232,6 @@ describe('testing put method', () => {
     assert.strictEqual(updatedBlog.likes, 100)
   })
 })
-
 
 after(async () => {
   await mongoose.connection.close()

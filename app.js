@@ -8,10 +8,11 @@ const usersRouter = require('./controllers/users')
 const blogsRouter = require('./controllers/blogs')
 const loginRouter = require('./controllers/login')
 const middleware = require('./utils/middleware')
-const logger =  require('./utils/logger')
+const logger = require('./utils/logger')
 
 const mongoUrl = config.MONGODB_URI
-mongoose.connect(mongoUrl)
+mongoose
+  .connect(mongoUrl)
   .then(() => {
     logger.info('connected to MongoDB')
   })

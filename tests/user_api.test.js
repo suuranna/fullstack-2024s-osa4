@@ -10,14 +10,14 @@ const User = require('../models/user')
 
 const initialUsers = [
   {
-    username: "Käyttäjä1",
-    name: "Kari",
-    password: "salasana"
+    username: 'Käyttäjä1',
+    name: 'Kari',
+    password: 'salasana',
   },
   {
-    username: "Käyttäjä2",
-    name: "Hikari",
-    password: "ParempiSalasana"
+    username: 'Käyttäjä2',
+    name: 'Hikari',
+    password: 'ParempiSalasana',
   },
 ]
 
@@ -48,9 +48,9 @@ describe('testing get method', () => {
 describe('testing adding a new user', () => {
   test('user can be added', async () => {
     const newUser = {
-      username: "UusiKäyttäjä",
-      name: "Nimi Hyvä",
-      password: "YeetinTeetin"
+      username: 'UusiKäyttäjä',
+      name: 'Nimi Hyvä',
+      password: 'YeetinTeetin',
     }
 
     await api
@@ -58,10 +58,10 @@ describe('testing adding a new user', () => {
       .send(newUser)
       .expect(201)
       .expect('Content-Type', /application\/json/)
-    
+
     const response = await api.get('/api/users')
     const users = response.body
-    const savedUser = users.find(user => user.username === newUser.username)
+    const savedUser = users.find((user) => user.username === newUser.username)
 
     assert.strictEqual(users.length, initialUsers.length + 1)
     assert.strictEqual(newUser.username, savedUser.username)
@@ -71,9 +71,9 @@ describe('testing adding a new user', () => {
 
   test('user with too short username will not be added', async () => {
     const newUser = {
-      username: "U",
-      name: "Nimi Hyvä",
-      password: "YeetinTeetin"
+      username: 'U',
+      name: 'Nimi Hyvä',
+      password: 'YeetinTeetin',
     }
 
     await api
@@ -85,9 +85,9 @@ describe('testing adding a new user', () => {
 
   test('user with too short password will not be added', async () => {
     const newUser = {
-      username: "UusiKäyttäjä",
-      name: "Nimi Hyvä",
-      password: "Y"
+      username: 'UusiKäyttäjä',
+      name: 'Nimi Hyvä',
+      password: 'Y',
     }
 
     await api
@@ -99,8 +99,8 @@ describe('testing adding a new user', () => {
 
   test('user with no password will not be added', async () => {
     const newUser = {
-      username: "UusiKäyttäjä",
-      name: "Nimi Hyvä"
+      username: 'UusiKäyttäjä',
+      name: 'Nimi Hyvä',
     }
 
     await api
@@ -112,8 +112,8 @@ describe('testing adding a new user', () => {
 
   test('user with no username will not be added', async () => {
     const newUser = {
-      password: "salasana",
-      name: "Nimi Hyvä"
+      password: 'salasana',
+      name: 'Nimi Hyvä',
     }
 
     await api

@@ -9,14 +9,14 @@ blogsRouter.get('/', async (request, response) => {
 
 blogsRouter.post('/', userExtractor, async (request, response, next) => {
   const user = request.user
-  
+
   const body = request.body
   const blog = new Blog({
     title: body.title,
     author: body.author,
     url: body.url,
     likes: body.likes,
-    user: user._id
+    user: user._id,
   })
 
   const savedBlog = await blog.save()
@@ -48,10 +48,13 @@ blogsRouter.put('/:id', async (request, response) => {
     title: body.title,
     author: body.author,
     url: body.url,
-    likes: body.likes
+    likes: body.likes,
   }
 
-  const updatedBlog = await Blog.findByIdAndUpdate(id, blog, { new: true, runValidators: true })
+  const updatedBlog = await Blog.findByIdAndUpdate(id, blog, {
+    new: true,
+    runValidators: true,
+  })
   response.json(updatedBlog)
 })
 
