@@ -16,6 +16,7 @@ blogsRouter.post('/', userExtractor, async (request, response, next) => {
     author: body.author,
     url: body.url,
     likes: body.likes,
+    comments: [],
     user: user._id,
   })
 
@@ -36,11 +37,11 @@ blogsRouter.delete('/:id', userExtractor, async (request, response) => {
     await Blog.findByIdAndDelete(id)
     response.status(204).end()
   } else {
-    return response.status(401).json({ error: 'no right to delete thi blog' })
+    return response.status(401).json({ error: 'no right to delete this blog' })
   }
 })
 
-blogsRouter.put('/:id', async (request, response) => {
+blogsRouter.put('/:id', userExtractor, async (request, response) => {
   const id = request.params.id
   const body = request.body
 
@@ -49,12 +50,35 @@ blogsRouter.put('/:id', async (request, response) => {
     author: body.author,
     url: body.url,
     likes: body.likes,
+    comments: body.comments
   }
 
   const updatedBlog = await Blog.findByIdAndUpdate(id, blog, {
     new: true,
     runValidators: true,
   }).populate('user', { username: 1, name: 1 })
+  response.json(updatedBlog)
+})
+
+blogsRouter.post('/:id/comments', userExtractor, async (request, response) => {
+  const id = request.params.id
+  const comment = request.body.comment
+  const blog = await Blog.findById(id)
+  const newComments = blog.comments.concat(comment)
+
+  const blogWithNewComments = {
+    title: blog.title,
+    author: blog.author,
+    url: blog.url,
+    likes: blog.likes,
+    comments: newComments
+  }
+
+  const updatedBlog = await Blog.findByIdAndUpdate(id, blogWithNewComments, {
+    new: true,
+    runValidators: true,
+  }).populate('user', { username: 1, name: 1 });
+
   response.json(updatedBlog)
 })
 
